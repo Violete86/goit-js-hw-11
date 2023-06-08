@@ -77,13 +77,19 @@ function createMarkup(arr) {
 
 
 async function onLoadMoreClick() {
-    pageCount += 1
-    const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${name}&${parametres}&page=${pageCount}&per_page=40`)
-    galleryEl.insertAdjacentHTML('beforeend',createMarkup(response.data.hits))
+    pageCount += 1;
+
+try {
+        const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${name}&${parametres}&page=${pageCount}&per_page=40`);
+    galleryEl.insertAdjacentHTML('beforeend',createMarkup(response.data.hits));
     if (response.data.totalHits <= pageCount * 40) {
-        loadMoreEl.style.display = 'none'
-        Notiflix.Notify.failure('Sorry, there are no more images.')
+        loadMoreEl.style.display = 'none';
+        Notiflix.Notify.failure('Sorry, there are no more images.');
+    } 
+ } catch (error) {
+    Notiflix.Notify.failure('An error occurred while loading more images.');
     }
+    
 }
 
 loadMoreEl.addEventListener('click', onLoadMoreClick)
