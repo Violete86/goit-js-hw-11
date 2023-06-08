@@ -1,15 +1,15 @@
 import axios from 'axios';
-import Notiflix from 'notiflix';
+// import Notiflix from 'notiflix';
 
-export {fetchPhotos, onLoadMoreClick};
+export {searchParams, response}  ;
 
-const BASE_URL = 'https://pixabay.com/api/';
-const API_KEY = '33056563-cc044f40a294fc1629405232d';
-const parametres = 'image_type=photo&orientation=horizontal&safesearch=true';
-let pageCount = 1
-let name = null;
+const searchParams = { BASE_URL: 'https://pixabay.com/api/',
+API_KEY: '33056563-cc044f40a294fc1629405232d',
+ parametres: 'image_type=photo&orientation=horizontal&safesearch=true',
+ pageCount: 1,
+ name: null,}
 
-const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${name}&${parametres}&page=${pageCount}&per_page=40`)
-console.log(response.data);
+async function response(obj) {await axios.get(`${searchParams.BASE_URL}?key=${searchParams.API_KEY}&q=${searchParams.name}&${searchParams.parametres}&page=${searchParams.pageCount}&per_page=40`)
+}console.log(response.data);
 
 
