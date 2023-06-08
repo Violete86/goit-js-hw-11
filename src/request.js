@@ -9,7 +9,10 @@ API_KEY: '33056563-cc044f40a294fc1629405232d',
  pageCount: 1,
  name: null,}
 
-async function response(obj) {await axios.get(`${searchParams.BASE_URL}?key=${searchParams.API_KEY}&q=${searchParams.name}&${searchParams.parametres}&page=${searchParams.pageCount}&per_page=40`)
-}console.log(response.data);
+async function response(obj) { const resp = await axios.get(`${obj.BASE_URL}?key=${obj.API_KEY}&q=${obj.name}&${obj.parametres}&page=${obj.pageCount}&per_page=40`)
+console.log(resp.data.hits);
+
+return resp;}
+
 
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+//import axios from 'axios';
 import Notiflix from 'notiflix';
 import { response, searchParams } from './request';
 
@@ -14,15 +14,15 @@ formEl.addEventListener('submit', fetchPhotos)
 async function fetchPhotos(e) {
     e.preventDefault()
     pageCount = 1
-    name = inputEl.value.trim()
+    searchParams.name = inputEl.value.trim()
 
 
     try {
         response(searchParams)
-        console.log(response.data)
+        console.log(response(searchParams))
         if (response.data.totalHits === 0) {
             throw new Error()
-        } else if(name.length === 0){
+        } else if(searchParams.name.length === 0){
             Notiflix.Notify.info('oops');
         }
         else if (response.data.totalHits <= pageCount * 40) {
