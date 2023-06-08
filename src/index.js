@@ -18,26 +18,32 @@ async function fetchPhotos(e) {
 
 
     try {
-        response(searchParams)
-        console.log(response(searchParams))
-        if (response.data.totalHits === 0) {
+  const respData =  await response(searchParams)
+        const arr = respData.data.hits
+        // console.log(arr);
+        // console.log(createMarkup(arr));
+        const markup = createMarkup(arr)
+        // console.log(markup);
+        // console.log(respData.data.totalHits );
+        if (respData.data.totalHits === 0) {
             throw new Error()
         } else if(searchParams.name.length === 0){
             Notiflix.Notify.info('oops');
         }
-        else if (response.data.totalHits <= pageCount * 40) {
-            galleryEl.innerHTML = createMarkup(response.data.hits)
+        else if (respData.data.totalHits <= pageCount * 40) {
+            galleryEl.innerHTML = markup
             loadMoreEl.style.display = 'none'
             inputEl.value = ''
         }
         else {
-            Notiflix.Notify.success(`Hooray! We found ${response.data.total} images.`);
-            galleryEl.innerHTML = createMarkup(response.data.hits)
+            Notiflix.Notify.success(`Hooray! We found ${respData.data.total} images.`);
+            galleryEl.innerHTML = markup
             loadMoreEl.style.display = 'block'
             inputEl.value = ''
         }
     } catch (error) {
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+        console.log(error);
         galleryEl.innerHTML = ''
         loadMoreEl.style.display = 'none'
     }
@@ -74,9 +80,13 @@ async function onLoadMoreClick() {
     pageCount += 1
 
     try {
-        response(searchParams)
-    galleryEl.insertAdjacentHTML('beforeend',createMarkup(response.data.hits))
-    if (response.data.totalHits <= pageCount * 40) {
+        const respData =  await response(searchParams)
+        const arr = respData.data.hits
+        // console.log(arr);
+        // console.log(createMarkup(arr));
+        const markup = createMarkup(arr)
+    galleryEl.insertAdjacentHTML('beforeend',markup)
+    if (respData.data.totalHits <= pageCount * 40) {
         loadMoreEl.style.display = 'none'
         Notiflix.Notify.failure('Sorry, there are no more images.')
     }
