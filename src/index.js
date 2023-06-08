@@ -2,20 +2,19 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 //import 
 
+import fetchPhotos from './request'
+
 const formEl = document.querySelector('.search-form')
 const inputEl = document.querySelector('input')
 
 const galleryEl = document.querySelector('.gallery')
 const loadMoreEl = document.querySelector('.load-more')
 
-const BASE_URL = 'https://pixabay.com/api/'
-const API_KEY = '33056563-cc044f40a294fc1629405232d'
-const parametres = 'image_type=photo&orientation=horizontal&safesearch=true'
-let pageCount = 1
-let name = null;
 
-loadMoreEl.style.display = 'none'
-formEl.addEventListener('submit', fetchPhotos)
+
+loadMoreEl.style.display = 'none';
+formEl.addEventListener('submit', fetchPhotos);
+
 
 async function fetchPhotos(e) {
     e.preventDefault()
@@ -24,23 +23,22 @@ async function fetchPhotos(e) {
 
 
     try {
-        const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${name}&${parametres}&page=${pageCount}&per_page=40`)
-        console.log(response.data)
+       
         if (response.data.totalHits === 0) {
             throw new Error()
         } else if(name.length === 0){
             Notiflix.Notify.info('oops');
         }
         else if (response.data.totalHits <= pageCount * 40) {
-            galleryEl.innerHTML = createMarkup(response.data.hits)
-            loadMoreEl.style.display = 'none'
-            inputEl.value = ''
+            galleryEl.innerHTML = createMarkup(response.data.hits);
+            loadMoreEl.style.display = 'none';
+            inputEl.value = '';
         }
         else {
             Notiflix.Notify.success(`Hooray! We found ${response.data.total} images.`);
-            galleryEl.innerHTML = createMarkup(response.data.hits)
-            loadMoreEl.style.display = 'block'
-            inputEl.value = ''
+            galleryEl.innerHTML = createMarkup(response.data.hits);
+            loadMoreEl.style.display = 'block';
+            inputEl.value = '';
         }
     } catch (error) {
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.')
@@ -80,7 +78,6 @@ async function onLoadMoreClick() {
     pageCount += 1;
 
 try {
-        const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${name}&${parametres}&page=${pageCount}&per_page=40`);
     galleryEl.insertAdjacentHTML('beforeend',createMarkup(response.data.hits));
     if (response.data.totalHits <= pageCount * 40) {
         loadMoreEl.style.display = 'none';
