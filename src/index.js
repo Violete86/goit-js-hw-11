@@ -99,3 +99,4 @@ async function onLoadMoreClick() {
 }
 
 loadMoreEl.addEventListener('click', onLoadMoreClick)
+
