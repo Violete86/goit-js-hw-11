@@ -13,7 +13,7 @@ formEl.addEventListener('submit', fetchPhotos)
 
 async function fetchPhotos(e) {
     e.preventDefault()
-    pageCount = 1
+    searchParams.pageCount = 1
     searchParams.name = inputEl.value.trim()
 
 
@@ -30,7 +30,7 @@ async function fetchPhotos(e) {
         } else if(searchParams.name.length === 0){
             Notiflix.Notify.info('oops');
         }
-        else if (respData.data.totalHits <= pageCount * 40) {
+        else if (respData.data.totalHits <= searchParams.pageCount * 40) {
             galleryEl.innerHTML = markup
             loadMoreEl.style.display = 'none'
             inputEl.value = ''
@@ -77,7 +77,7 @@ function createMarkup(arr) {
 
 
 async function onLoadMoreClick() {
-    pageCount += 1
+   searchParams.pageCount += 1
 
     try {
         const respData =  await response(searchParams)
@@ -86,7 +86,7 @@ async function onLoadMoreClick() {
         // console.log(createMarkup(arr));
         const markup = createMarkup(arr)
     galleryEl.insertAdjacentHTML('beforeend',markup)
-    if (respData.data.totalHits <= pageCount * 40) {
+    if (respData.data.totalHits <= searchParams.pageCount * 40) {
         loadMoreEl.style.display = 'none'
         Notiflix.Notify.failure('Sorry, there are no more images.')
     }
